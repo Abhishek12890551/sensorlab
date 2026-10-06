@@ -12,6 +12,8 @@ import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.launch
 import javax.inject.Inject
+import javax.inject.Provider
+import com.sensorlab.data.sensors.SensorEventSource
 
 sealed class SensorsUiState {
     object Loading : SensorsUiState()
@@ -28,8 +30,11 @@ sealed class SensorsUiState {
 
 @HiltViewModel
 class SensorsViewModel @Inject constructor(
-    private val sensorRepository: SensorRepository
+    private val sensorRepository: SensorRepository,
+    private val eventSourceProvider: Provider<SensorEventSource>
 ) : ViewModel() {
+
+    fun createEventSource(): SensorEventSource = eventSourceProvider.get()
 
     private val _uiState = MutableStateFlow<SensorsUiState>(SensorsUiState.Loading)
     val uiState: StateFlow<SensorsUiState> = _uiState.asStateFlow()

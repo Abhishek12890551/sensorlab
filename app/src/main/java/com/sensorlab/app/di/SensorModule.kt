@@ -54,4 +54,7 @@ abstract class SensorModuleBinds {
     @Binds
     @Singleton
     abstract fun bindSensorSource(impl: AndroidSensorSource): SensorSource
+
+    @Binds
+    abstract fun bindSensorEventSource(impl: com.sensorlab.data.sensors.AndroidSensorEventSource): com.sensorlab.data.sensors.SensorEventSource
 }

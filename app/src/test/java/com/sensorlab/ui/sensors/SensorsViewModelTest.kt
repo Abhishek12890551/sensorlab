@@ -2,8 +2,10 @@ package com.sensorlab.ui.sensors
 
 import com.sensorlab.core.model.RawSensor
 import com.sensorlab.data.sensors.FakeSensorSource
+import com.sensorlab.data.sensors.FakeSensorEventSource
 import com.sensorlab.data.sensors.SensorRepository
 import com.sensorlab.data.sensors.SensorSource
+import javax.inject.Provider
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.test.StandardTestDispatcher
@@ -45,7 +47,7 @@ class SensorsViewModelTest {
     @Test
     fun testLoadingAndEmptyStates() = runTest {
         val repo = SensorRepository(FakeSensorSource(emptyList()), tempFolder.root, "1.0", testDispatcher)
-        val vm = SensorsViewModel(repo)
+        val vm = SensorsViewModel(repo, Provider { FakeSensorEventSource() })
         
         assertTrue(vm.uiState.value is SensorsUiState.Loading)
         testDispatcher.scheduler.advanceUntilIdle()
@@ -60,7 +62,7 @@ class SensorsViewModelTest {
             }
         }
         val repo = SensorRepository(fakeSource, tempFolder.root, "1.0", testDispatcher)
-        val vm = SensorsViewModel(repo)
+        val vm = SensorsViewModel(repo, Provider { FakeSensorEventSource() })
         
         testDispatcher.scheduler.advanceUntilIdle()
         assertTrue(vm.uiState.value is SensorsUiState.Error)
@@ -74,7 +76,7 @@ class SensorsViewModelTest {
         val s4 = RawSensor(999, "com.vendor.custom", "Custom", "C", 1, 1f, 1f, 1f, 10, 10, 0, 0, 0, false, false)
         
         val repo = SensorRepository(FakeSensorSource(listOf(s1, s2, s3, s4)), tempFolder.root, "1.0", testDispatcher)
-        val vm = SensorsViewModel(repo)
+        val vm = SensorsViewModel(repo, Provider { FakeSensorEventSource() })
         testDispatcher.scheduler.advanceUntilIdle()
         
         val success = vm.uiState.value as SensorsUiState.Success
@@ -110,7 +112,7 @@ class SensorsViewModelTest {
         val s3 = RawSensor(5, "android.sensor.light", "Light", "Samsung", 1, 1f, 1f, 1f, 10, 10, 0, 0, 0, true, false)
         
         val repo = SensorRepository(FakeSensorSource(listOf(s1, s2, s3)), tempFolder.root, "1.0", testDispatcher)
-        val vm = SensorsViewModel(repo)
+        val vm = SensorsViewModel(repo, Provider { FakeSensorEventSource() })
         testDispatcher.scheduler.advanceUntilIdle()
         
         vm.setFilter("All", "", true)
