@@ -6,7 +6,7 @@ local.properties
 *.aab
 *.jks
 *.keystore
-data/
+/data/
 *.tar
 gradle-*-bin.zip
 /gradle-*/

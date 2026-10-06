@@ -5,7 +5,7 @@ build/
 *.aab
 *.tar
 *.zip
-data/
+/data/
 *.csv
 local.properties
 *.jks
