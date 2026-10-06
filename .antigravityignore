@@ -1,0 +1,12 @@
+build/
+.gradle/
+.idea/
+*.apk
+*.aab
+*.tar
+*.zip
+data/
+*.csv
+local.properties
+*.jks
+*.keystore
